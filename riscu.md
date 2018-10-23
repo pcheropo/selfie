@@ -57,3 +57,60 @@ The parameter `imm` denotes a signed integer value represented by a fixed number
 #### System
 
 `ecall`: system call number is in `$a7`, parameters are in `$a0-$a2`, return value is in `$a0`.
+
+------------------------------------------------------------------------------------------
+
+Keywords Instructions : `lui`,`addi`,`add`,`sub`,`mul`,`divu`,`remu`,
+          `sltu`,`ld`,`sd`,`beq`,`jal`,`jalr`,`ecall`,`nop`
+		  	  
+Keywords data : `.quad` 
+
+Keywords Registers : `zero`,`ra`,`sp`,`gp`,`tp`,`t0`,`t1`,`t2`,`fp`,`s1`,
+		  `a0`,`a1`,`a2`,`a3`,`a4`,`a5`,`a6`,`a7`,`s2`,`s3`,`s4`,
+		  `s5`,`s6`,`s7`,`s8`,`s9`,`s10`,`s11`,`t3`,`t4`,`t5`,`t6`
+
+
+```
+
+
+Risc-U Grammar :
+
+
+risc-u = {address ":" (instruction | data) \n}.
+
+address = "0x" hexnum .
+
+hexnum = (digit|UpperLetter){digit|UpperLetter}.
+
+digit = "0"|"1"|...|"9" .
+
+UpperLetter = "A"|...|"F".
+
+imm = digit{digit}.
+
+instruction = initialization | arithmetic | memory | control | system | "nop" .
+
+initialization = ("lui" register "," address) | 
+                 ("addi" register "," register "," ["-"] imm) .
+
+register = "$"("zero" | "ra" | "sp" | "gp" | "tp" | 
+               "t0" | "t1" | "t2" | "fp" | "s1" | 
+			   "a0" | "a1" | "a2" | "a3" | "a4" | 
+			   "a5" | "a6" | "a7" | "s2" | "s3" | 
+			   "s4" | "s5" | "s6" | "s7" | "s8" | 
+			   "s9" | "s10" | "s11" | "t3" | "t4" | "t5" | "t6"). 
+
+arithmetic = ("add" | "sub" | "mul" | "divu" | "remu" | "sltu") 
+              register "," register "," register.
+
+memory = ("ld" | "sd") register "," ["-"] imm "(" register ")".
+
+control = ("beq" register "," register "," address) | 
+          ("jal" register "," ["-"] imm "[" address "]" ) | 
+		  ("jalr" register "," imm "(" register ")").
+
+system = "ecall" .
+
+data = ".quad" address.  
+
+```
